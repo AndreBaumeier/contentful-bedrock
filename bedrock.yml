@@ -39,3 +39,8 @@ Resources:
             Resource: "*"
       Users:
         - !Ref ContentfulBedrockUser
+
+Outputs:
+  SecretManagerURL:
+    Description: "URL to the Access and Secret Key in Secrets Manager"
+    Value: !Sub "https://console.aws.amazon.com/secretsmanager/home?region=${AWS::Region}#/secret?name=${ContentfulBedrockUserCredentialsStored}"
