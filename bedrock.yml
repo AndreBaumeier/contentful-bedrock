@@ -1,0 +1,41 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: Contentful Bedrock Deployment
+
+Resources:
+
+  ContentfulBedrockUser:
+    Type: AWS::IAM::User
+    Properties:
+      Path: /bedrock/
+      UserName: !Ref AWS::StackName
+
+  ContentfulBedrockUserCredentials:
+    Type: AWS::IAM::AccessKey
+    Properties:
+      Status: Active
+      UserName: !Ref ContentfulBedrockUser
+
+  ContentfulBedrockUserCredentialsStored:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Name: !Sub /contentful/credentials/${ContentfulBedrockUser}
+      SecretString: !Sub '{"ACCESS_KEY":"${ContentfulBedrockUserCredentials}","SECRET_KEY":"${ContentfulBedrockUserCredentials.SecretAccessKey}"}'
+
+  ContentfulBedrockUserPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: BedrockUserPolicy
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: "contentfulapipolicy"
+            Effect: "Allow"
+            Action:
+              - "bedrock:InvokeModel"
+              - "bedrock:GetFoundationModel"
+              - "bedrock:InvokeModelWithResponseStream"
+              - "bedrock:ListFoundationModels"
+            Resource: "*"
+      Users:
+        - !Ref ContentfulBedrockUser
