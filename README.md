@@ -54,7 +54,7 @@ Once the stack completes you can find a link to the credentials in the `output` 
 >- US East (N. Virginia)
 
 
-## 4. Detailed step by step guide with screenshots
+## 3. Detailed step by step guide with screenshots
 
 Simply log into the AWS Console and select your preferred region.
 
