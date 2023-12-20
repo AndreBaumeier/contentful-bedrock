@@ -64,8 +64,10 @@ Once the stack completes you can find a link to the credentials in the `output` 
 ## 3. Maintainability / Updates
 
 1. Setup [cost alerts and budgets](https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-managing-costs.html). 
-2. Access to new models: Once new models become available you will have to request access to these models, to make them usable within your Contentful application. Remember to delete the SecretsManager key. Apart from that there are no moving parts that need to be taken care of.
+2. Access to new models: Once new models become available you will have to request access to these models, to make them usable within your Contentful application.
 3. [Monitor Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/monitoring.html)
+4. Remember to delete the SecretsManager key after retrieving it.
+5. Apart from that there are no moving parts that need to be maintained.
 
 ## Further Documentation ##
 
