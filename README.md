@@ -79,3 +79,7 @@ By clicking on **Manage model access** you can request the models you’d like a
 
 
 *Note You won’t be charged for just having access to the model; charges only accrue when you use the model. Also, not all models will be available, and some (like Claude) will require you to submit a use case before access is granted.*
+
+## Further Documentation ##
+
+This [Blog Post](https://community.aws/content/2ZAHJMCN4Ffi6W2DPJFIgq8MHkX/aws-bedrock---learning-series---blog-1) goes into further details on how to set up Bedrock.
