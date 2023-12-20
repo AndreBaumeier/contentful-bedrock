@@ -9,6 +9,8 @@ Resources:
     Properties:
       Path: /bedrock/
       UserName: !Ref AWS::StackName
+      ManagedPolicyArns:
+        - !Ref ContentfulBedrockManagedPolicy
 
   ContentfulBedrockUserCredentials:
     Type: AWS::IAM::AccessKey
@@ -22,39 +24,23 @@ Resources:
       Name: !Sub /contentful/credentials/${ContentfulBedrockUser}
       SecretString: !Sub '{"ACCESS_KEY":"${ContentfulBedrockUserCredentials}","SECRET_KEY":"${ContentfulBedrockUserCredentials.SecretAccessKey}"}'
 
-  ContentfulBedrockUserPolicy:
-    Type: AWS::IAM::Policy
+  ContentfulBedrockManagedPolicy:
+    Type: AWS::IAM::ManagedPolicy
     Properties:
-      PolicyName: BedrockUserPolicy
+      Description: "Managed policy for accessing Bedrock"
+      Path: /
       PolicyDocument:
         Version: "2012-10-17"
         Statement:
-          - Sid: "contentfulapipolicy"
-            Effect: "Allow"
-            Action:
+          - Effect: "Allow"
+            Action: 
               - "bedrock:InvokeModel"
               - "bedrock:GetFoundationModel"
               - "bedrock:InvokeModelWithResponseStream"
               - "bedrock:ListFoundationModels"
             Resource: "*"
-      Users:
-        - !Ref ContentfulBedrockUser
-  
-  ContentfulBedrockUserCredentialsParameter:
-    Type: 'AWS::SSM::Parameter'
-    Properties:
-      Name: !Sub '/contentful/credentials/${AWS::StackName}'
-      Type: 'SecureString'
-      Value: !Sub |
-        {
-          "ACCESS_KEY": "${ContentfulBedrockUserCredentials}",
-          "SECRET_KEY": "${ContentfulBedrockUserCredentials.SecretAccessKey}"
-        }
 
 Outputs:
   SecretManagerURL:
     Description: "URL to the Access and Secret Key in Secrets Manager"
     Value: !Sub "https://console.aws.amazon.com/secretsmanager/home?region=${AWS::Region}#/secret?name=${ContentfulBedrockUserCredentialsStored}"
-  ParameterStoreURL:
-    Description: "URL to the Parameter in Systems Manager Parameter Store"
-    Value: !Sub "https://console.aws.amazon.com/systems-manager/parameters/${ContentfulBedrockUserCredentialsParameter}/description?region=${AWS::Region}"
