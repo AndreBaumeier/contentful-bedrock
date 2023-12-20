@@ -50,7 +50,7 @@ Simply click one of the buttons, for the desired region and follow the instructi
 
 
 
-## Step by Step Guide with Screens
+## 3. Detailed step by step guide with screenshots
 
 Simply log into the AWS Console and select your preferred region.
 
