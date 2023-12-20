@@ -22,11 +22,18 @@ Usage of Bedrock will incur cost. Please see the [Amazon Bedrock pricing](https:
 
 
 ## 1. **Enable Access to Bedrock Large Language Models:**
+
+*Note* Bedrock is not supported in all regions, and the availablity for models may vary by region. Please select the region that matches your needs. The access key won't be limited to a region - you may use the same key for multiple regions. You will have to request model access for each region.
     
-*   Go to the AWS console.
+*   Log into the AWS Console and select your preferred region.
 *   Navigate to Bedrock and select 'Model access' from the left hand menu. ![Alt text](<instructions/bedrock-model-access.png>)
 *   Enable the models you wish to use.
-*   For detailed instructions, see [Model Access Documentation](https://docs.aws.amazon.com/bedrock/latest/userguide/model-access.html).
+*   ![Screenshot of the model selection screen](./instructions/overview.png)
+*   By clicking on **Manage model access** you can request the models you’d like access to, and then click **Save changes**.
+
+*Note You won’t be charged for just having access to the model; charges only accrue when you use the model. Also, not all models will be available, and some (like Claude) will require you to submit a use case before access is granted.*
+
+For detailed instructions, see [Model Access Documentation](https://docs.aws.amazon.com/bedrock/latest/userguide/model-access.html).
 
 ## 2. Set Up Permissions and get the API Key
     
@@ -54,30 +61,11 @@ Once the stack completes you can find a link to the credentials in the `output` 
 >- US East (N. Virginia)
 
 
-## 3. Detailed step by step guide with screenshots
+## 3. Maintainability / Updates
 
-Simply log into the AWS Console and select your preferred region.
-
-*Note* Bedrock is not supported in all regions, and the availablity for models may vary by region. Please select the region that matches your needs. The access key won't be limited to a region - you may use the same key for multiple regions. You will have to request model access for each region.
-
-Once logged in, navigate to the Amazon Bedrock.
-
-You should view this screen:
-![Screenshot of the Amazon Bedrock Screen](./instructions/start.png)
-
-Now to request access, go to the left-hand navigation and click Model access, as depicted here:
-![Screenshot of a the Model Acess section on the start page.](./instructions/access.png)
-
-
->To get a better idea of the models available, and what each does, on the left-hand navigation, click Base models.
-
-You should see this page, from which you can request model access:
-![Screenshot of the model selection screen](./instructions/overview.png)
-
-By clicking on **Manage model access** you can request the models you’d like access to, and then click **Save changes**.
-
-
-*Note You won’t be charged for just having access to the model; charges only accrue when you use the model. Also, not all models will be available, and some (like Claude) will require you to submit a use case before access is granted.*
+1. Setup [cost alerts and budgets](https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-managing-costs.html). 
+2. Access to new models: Once new models become available you will have to request access to these models, to make them usable within your Contentful application. Remember to delete the SecretsManager key. Apart from that there are no moving parts that need to be taken care of.
+3. [Monitor Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/monitoring.html)
 
 ## Further Documentation ##
 
