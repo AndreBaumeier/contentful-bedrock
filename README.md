@@ -61,13 +61,38 @@ Once the stack completes you can find a link to the credentials in the `output` 
 >- US East (N. Virginia)
 
 
-## 3. Maintainability / Updates
+## 3. Maintainability / Updates / Next Steps
 
-1. Setup [cost alerts and budgets](https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-managing-costs.html). 
-2. Access to new models: Once new models become available you will have to request access to these models, to make them usable within your Contentful application.
-3. [Monitor Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/monitoring.html)
-4. Remember to delete the SecretsManager key after retrieving it.
-5. Apart from that there are no moving parts that need to be maintained.
+### Setup cost alerts and budgets
+
+To provide you an easy entry to cost controling we created a CloudFormation template for you which sets up a soft and hard limit for your account usage. upon reaching the limits you will be notified via your supplied email address and/or phone number.
+
+| Region |     | CloudFormation Stack |
+| ---    | --- | --- |
+| US East (N. Virginia) | **us-east-1** | [![Launch stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://us-east-1.console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=ContentfulBedrockIntegration&templateURL=https://raw.githubusercontent.com/AndreBaumeier/contentful-bedrock/main/billing-alarm.yml) |
+| Europe (Frankfurt) | **eu-central-1** | [![Launch stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://eu-central-1.console.aws.amazon.com/cloudformation/home?region=eu-central-1#/stacks/new?stackName=ContentfulBedrockIntegration&templateURL=https://raw.githubusercontent.com/AndreBaumeier/contentful-bedrock/main/billing-alarm.yml) |
+| Use currently active region | --- | [![Launch stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?#/stacks/new?stackName=ContentfulBedrockIntegration&templateURL=https://raw.githubusercontent.com/AndreBaumeier/contentful-bedrock/main/billing-alarm.yml) |
+
+Learn more about [cost alerts and budgets](https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-managing-costs.html).
+
+
+### Access to new models
+
+Once new models become available you will have to request access to these models, to make them usable within your Contentful application. Keep an eye out for new models and enable them as required.
+
+### Monitor Amazon Bedrock Usage
+
+[Monitor Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/monitoring.html)
+
+### Cleanup
+
+Remember to delete the SecretsManager key after retrieving it.
+
+Apart from that there are no moving parts that need to be maintained.
+
+### Deletion
+
+In case you no longer want to use this solution you can delete the executed cloudformation templates which will rollback any generated resources, leaving you with whatever has been configured before in your AWS account.
 
 ## Further Documentation ##
 
