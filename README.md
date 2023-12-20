@@ -7,7 +7,7 @@ Amazon Bedrock is a fully managed service and it is serverless in nature that pr
 
 ## Prerequisites
 
- Refer to the AWS Account Creation Documentation for a detailed [guide](https://docs.aws.amazon.com/accounts/latest/reference/manage-acct-creating.html).
+ You will need an AWS account and have to be logged in. Refer to the AWS Account Creation Documentation for a detailed [guide](https://docs.aws.amazon.com/accounts/latest/reference/manage-acct-creating.html).
 
 > Note: A credit card is required for account creation, but you won't be billed for this step.
 > :warning:
