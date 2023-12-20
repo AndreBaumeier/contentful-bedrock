@@ -19,13 +19,20 @@ Parameters:
   SoftLimit:
     Type: Number
     Default: 100
-    Description: Soft limit for budget alert (in USD).
-
+    Description: >
+      Sets the soft limit for budget alerts in USD. This limit serves as a preliminary 
+      warning threshold. When actual or forecasted monthly usage reaches this limit, 
+      you will receive a notification. This alert allows for proactive budget management 
+      and enables you to adjust your usage or budget before the hard limit is reached.
   HardLimit:
     Type: Number
-    Default: 200
-    Description: Hard limit for budget alert (in USD).
-
+    Default: 0
+    Description: >
+      Optional. Specifies the hard limit for budget alerts in USD. When this limit is reached, 
+      the IAM policy of the ContentfulBedrockUser, which grants access to Bedrock services, 
+      will be automatically removed. This action serves as a cost control measure, 
+      preventing further usage of Bedrock services. To restore access, the budget limit 
+      needs to be adjusted, and the IAM policy must be manually reattached.
   EmailAddress:
     Type: String
     Description: Email address to receive budget alerts.
@@ -37,6 +44,13 @@ Parameters:
 
 Conditions:
   CreateSMSNotification: !Not [!Equals [!Ref PhoneNumber, '']]
+  CreateHardLimit: !Not [!Equals [!Ref HardLimit, 0]]
+  CreateSMSAndHardLimit: !And
+    - Condition: CreateSMSNotification
+    - Condition: CreateHardLimit
+  CreateEmailAndHardLimit: !And
+    - Condition: CreateSMSNotification
+    - Condition: CreateHardLimit
 
 Resources:
 
@@ -45,6 +59,7 @@ Resources:
 
   HardLimitAlarmTopic:
     Type: 'AWS::SNS::Topic'
+    Condition: CreateHardLimit
 
   EmailSubscriptionSoftLimit:
     Type: 'AWS::SNS::Subscription'
@@ -55,6 +70,7 @@ Resources:
 
   EmailSubscriptionHardLimit:
     Type: 'AWS::SNS::Subscription'
+    Condition: CreateEmailAndHardLimit
     Properties:
       Protocol: email
       Endpoint: !Ref EmailAddress
@@ -70,7 +86,7 @@ Resources:
 
   SMSSubscriptionHardLimit:
     Type: 'AWS::SNS::Subscription'
-    Condition: CreateSMSNotification
+    Condition: CreateSMSAndHardLimit
     Properties:
       Protocol: sms
       Endpoint: !Ref PhoneNumber
@@ -96,6 +112,7 @@ Resources:
 
   HardLimitBudget:
     Type: 'AWS::Budgets::Budget'
+    Condition: CreateHardLimit
     Properties:
       Budget:
         BudgetLimit:
@@ -118,5 +135,6 @@ Outputs:
     Value: !Ref SoftLimitAlarmTopic
 
   HardLimitAlarmTopicArn:
+    Condition: CreateHardLimit
     Description: "ARN of the Hard Limit Alarm SNS Topic"
     Value: !Ref HardLimitAlarmTopic
