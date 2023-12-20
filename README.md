@@ -32,7 +32,7 @@ Usage of Bedrock will incur cost. Please see the [Amazon Bedrock pricing](https:
     
 *Note: This template should work in all regions, not limited ot the region Bedrock is available. In the selected region the Access Token is going to be stored in AWS Secrets Manager.*
 
-Simply click one of the buttons, for the desired region and follow the instructions.
+To prepare your AWS account to be used for Contentful simply click one of the buttons at the end of this chapter and follow the instructions (no changes are needed to the given defaults). This will deploy a CloudFormation stack in your account, creating the required IAM User with the needed permissions, and generates access keys for you.
 
 Once the stack completes you can find a link to the credentials in the `output` tab. Simply click the link and save the credentials in your Contentful application. You can delete the secret afterwards from Secrets Manager (this secret would otherwise cost a small amount for each month of usage).
 
