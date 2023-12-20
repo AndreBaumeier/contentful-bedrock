@@ -1,4 +1,4 @@
-# Cranking Up Bedrock
+# AI Made Easy: Powering Contentful with Amazon Bedrock in One Click
 
 Getting access to the various Bedrock Models, requires 
 
