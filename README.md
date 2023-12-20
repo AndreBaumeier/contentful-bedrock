@@ -1,5 +1,7 @@
 # AI Made Easy: Powering Contentful with Amazon Bedrock in One Click
 
+Amazon Bedrock is a fully managed service and it is serverless in nature that provides a selection of high-performing foundation models (FMs) from leading AI companies, including AI21 Labs, Anthropic, Cohere, Meta, Stability AI, and Amazon itself. The service offers a unified API and a range of features to simplify the development of generative AI applications, making it accessible to a wider range of users without compromising on privacy and security.
+
 This guide will help you to setup your AWS account for Contentful to access Amazon Bedrock. To gain access to various Bedrock Models the only prerequisite is to have an AWS account.
 
 ## Prerequisites
@@ -71,3 +73,7 @@ By clicking on **Manage model access** you can request the models you’d like a
 
 
 *Note You won’t be charged for just having access to the model; charges only accrue when you use the model. Also, not all models will be available, and some (like Claude) will require you to submit a use case before access is granted.*
+
+## Further Documentation ##
+
+This [Blog Post](https://community.aws/content/2ZAHJMCN4Ffi6W2DPJFIgq8MHkX/aws-bedrock---learning-series---blog-1) goes into further details on how to set up Bedrock.
