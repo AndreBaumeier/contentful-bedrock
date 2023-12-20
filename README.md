@@ -1,39 +1,31 @@
 # AI Made Easy: Powering Contentful with Amazon Bedrock in One Click
 
-Getting access to the various Bedrock Models, requires 
+This guide will help you to setup your AWS account for Contentful to access Amazon Bedrock. To gain access to various Bedrock Models the only prerequisite is to have an AWS account.
 
 ## Prerequisites
 
-Before you begin, you have to set up the following things - you can find the detailed instruction further down below.
-
-1. Have an AWS Account
-1. Enable the Bedrock Largue Language Models
-1. Set up the right permission and fetch the API Key
-
-
-
-## 1. **Create an AWS Account:**
-    
  Refer to the AWS Account Creation Documentation for a detailed [guide](https://docs.aws.amazon.com/accounts/latest/reference/manage-acct-creating.html).
 
->Note: A credit card is required for account creation, but you won't be billed for this step.
-
-
-:warning:
-
+> Note: A credit card is required for account creation, but you won't be billed for this step.
+> :warning:
 > Because of the critical nature of the root user of the account, we strongly recommend that you use an email address that can be accessed by a group, rather than only an individual. That way, if the person who signed up for the AWS account leaves the company, the AWS account can still be used because the email address is still accessible. If you lose access to the email address associated with the AWS account, then you can't recover access to the account if you ever lose the password.
 
+## Cost
+
+Deployment of this template will vary by region, the cost will occur for a managed secret (the Access and Secret Keys that are generated) - feel free to delete the secret after you stored them securely.
+Usage of Bedrock will incur cost. Please see the [Amazon Bedrock pricing](https://aws.amazon.com/de/bedrock/pricing/) page for details.
+
+## Setup instructions
 
 
-
-## 2. **Enable Access to Bedrock Large Language Models:**
+## 1. **Enable Access to Bedrock Large Language Models:**
     
 *   Go to the AWS console.
-*   Navigate to Bedrock and select 'Settings'.
+*   Navigate to Bedrock and select 'Model access' from the left hand menu. ![Alt text](<instructions/bedrock-model-access.png>)
 *   Enable the models you wish to use.
 *   For detailed instructions, see [Model Access Documentation](https://docs.aws.amazon.com/bedrock/latest/userguide/model-access.html).
 
-## 3. Set Up Permissions and get the API Key
+## 2. Set Up Permissions and get the API Key
     
 *Note: This template should work in all regions, not limited ot the region Bedrock is available. In the selected region the Access Token is going to be stored in AWS Secrets Manager.*
 
@@ -59,7 +51,7 @@ Simply click one of the buttons, for the desired region and follow the instructi
 
 Simply log into the AWS Console and select your preferred region.
 
-*Note* Please keep the supported regions and models per regions in mind.
+*Note* Bedrock is not supported in all regions, and the availablity for models may vary by region. Please select the region that matches your needs. The access key won't be limited to a region - you may use the same key for multiple regions. You will have to request model access for each region.
 
 Once logged in, navigate to the Amazon Bedrock.
 
