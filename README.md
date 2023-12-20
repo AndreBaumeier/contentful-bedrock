@@ -34,6 +34,10 @@ Usage of Bedrock will incur cost. Please see the [Amazon Bedrock pricing](https:
 
 Simply click one of the buttons, for the desired region and follow the instructions.
 
+Once the stack completes you can find a link to the credentials in the `output` tab. Simply click the link and save the credentials in your Contentful application. You can delete the secret afterwards from Secrets Manager (this secret would otherwise cost a small amount for each month of usage).
+
+![Alt text](secretsmanager.png)
+
 | Region |     | CloudFormation Stack |
 | ---    | --- | --- |
 | US East (N. Virginia) | **us-east-1** | [![Launch stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://us-east-1.console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=ContentfulBedrockIntegration&templateURL=https://raw.githubusercontent.com/AndreBaumeier/contentful-bedrock/main/bedrock.yml) |
@@ -50,8 +54,7 @@ Simply click one of the buttons, for the desired region and follow the instructi
 >- US East (N. Virginia)
 
 
-
-## 3. Detailed step by step guide with screenshots
+## 4. Detailed step by step guide with screenshots
 
 Simply log into the AWS Console and select your preferred region.
 
