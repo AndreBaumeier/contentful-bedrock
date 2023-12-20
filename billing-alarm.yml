@@ -1,0 +1,122 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Setup for Budget Alarms with Email Notifications
+
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - Label:
+          default: "Notification Settings"
+        Parameters:
+          - EmailAddress
+          - PhoneNumber
+      - Label:
+          default: "Budget Settings"
+        Parameters:
+          - SoftLimit
+          - HardLimit
+
+Parameters:
+  SoftLimit:
+    Type: Number
+    Default: 100
+    Description: Soft limit for budget alert (in USD).
+
+  HardLimit:
+    Type: Number
+    Default: 200
+    Description: Hard limit for budget alert (in USD).
+
+  EmailAddress:
+    Type: String
+    Description: Email address to receive budget alerts.
+  
+  PhoneNumber:
+    Type: String
+    Default: ''
+    Description: "Optional. Phone number for SMS alerts in E.164 format, e.g., +12065550100."
+
+Conditions:
+  CreateSMSNotification: !Not [!Equals [!Ref PhoneNumber, '']]
+
+Resources:
+
+  SoftLimitAlarmTopic:
+    Type: 'AWS::SNS::Topic'
+
+  HardLimitAlarmTopic:
+    Type: 'AWS::SNS::Topic'
+
+  EmailSubscriptionSoftLimit:
+    Type: 'AWS::SNS::Subscription'
+    Properties:
+      Protocol: email
+      Endpoint: !Ref EmailAddress
+      TopicArn: !Ref SoftLimitAlarmTopic
+
+  EmailSubscriptionHardLimit:
+    Type: 'AWS::SNS::Subscription'
+    Properties:
+      Protocol: email
+      Endpoint: !Ref EmailAddress
+      TopicArn: !Ref HardLimitAlarmTopic
+
+  SMSSubscriptionSoftLimit:
+    Type: 'AWS::SNS::Subscription'
+    Condition: CreateSMSNotification
+    Properties:
+      Protocol: sms
+      Endpoint: !Ref PhoneNumber
+      TopicArn: !Ref SoftLimitAlarmTopic
+
+  SMSSubscriptionHardLimit:
+    Type: 'AWS::SNS::Subscription'
+    Condition: CreateSMSNotification
+    Properties:
+      Protocol: sms
+      Endpoint: !Ref PhoneNumber
+      TopicArn: !Ref HardLimitAlarmTopic
+
+  SoftLimitBudget:
+    Type: 'AWS::Budgets::Budget'
+    Properties:
+      Budget:
+        BudgetLimit:
+          Amount: !Ref SoftLimit
+          Unit: USD
+        TimeUnit: MONTHLY
+        BudgetType: COST
+      NotificationsWithSubscribers:
+        - Notification:
+            NotificationType: ACTUAL
+            ComparisonOperator: GREATER_THAN
+            Threshold: 75
+          Subscribers:
+            - SubscriptionType: SNS
+              Address: !Ref SoftLimitAlarmTopic
+
+  HardLimitBudget:
+    Type: 'AWS::Budgets::Budget'
+    Properties:
+      Budget:
+        BudgetLimit:
+          Amount: !Ref HardLimit
+          Unit: USD
+        TimeUnit: MONTHLY
+        BudgetType: COST
+      NotificationsWithSubscribers:
+        - Notification:
+            NotificationType: ACTUAL
+            ComparisonOperator: GREATER_THAN
+            Threshold: 100
+          Subscribers:
+            - SubscriptionType: SNS
+              Address: !Ref HardLimitAlarmTopic
+
+Outputs:
+  SoftLimitAlarmTopicArn:
+    Description: "ARN of the Soft Limit Alarm SNS Topic"
+    Value: !Ref SoftLimitAlarmTopic
+
+  HardLimitAlarmTopicArn:
+    Description: "ARN of the Hard Limit Alarm SNS Topic"
+    Value: !Ref HardLimitAlarmTopic
