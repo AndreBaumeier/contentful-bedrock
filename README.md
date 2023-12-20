@@ -43,7 +43,7 @@ To prepare your AWS account to be used for Contentful simply click one of the bu
 
 Once the stack completes you can find a link to the credentials in the `output` tab. Simply click the link and save the credentials in your Contentful application. You can delete the secret afterwards from Secrets Manager (this secret would otherwise cost a small amount for each month of usage).
 
-![Alt text](secretsmanager.png)
+![Alt text](instructions/secretsmanager.png)
 
 | Region |     | CloudFormation Stack |
 | ---    | --- | --- |
