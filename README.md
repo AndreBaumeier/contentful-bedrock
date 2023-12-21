@@ -65,7 +65,7 @@ Once the stack completes you can find a link to the credentials in the `output` 
 
 ### Setup cost alerts and budgets
 
-To provide you an easy entry to cost controling we created a CloudFormation template for you which sets up a soft and hard limit for your accounts Bedrock usage. upon reaching the limits you will be notified via your supplied email address and/or phone number.
+To provide you an easy entry to cost controling we created a CloudFormation template for you which sets up a soft and hard limit for your accounts Bedrock usage. upon reaching the limits you will be notified via your supplied email address and/or phone number. Upon reaching the hard limit, the created IAM User for accessing Bedrock will have it's policies removed for acessing Bedrock. That way no further Bedrock usage can be issued until the Budget Limits have been raised and the policy has been reattached.
 
 | Region |     | CloudFormation Stack |
 | ---    | --- | --- |
