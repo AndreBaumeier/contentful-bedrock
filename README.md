@@ -16,7 +16,7 @@ Amazon Bedrock is a fully managed service and it is serverless in nature that pr
 ## Cost
 
 Deployment cost of this template will vary by region (e.g. 0,40 USD), it will use [one managed secret](https://aws.amazon.com/de/secrets-manager/pricing/) (the Access and Secret Keys that are generated) - feel free to delete the secret after you stored them securely.
-Usage of Bedrock will incur cost. Please see the [Amazon Bedrock pricing](https://aws.amazon.com/de/bedrock/pricing/) page for details.
+Usage of Bedrock will incur cost. Please see the [Amazon Bedrock pricing](https://aws.amazon.com/de/bedrock/pricing/) page for details. See [Setup cost alerts and budgets](#Setup cost alerts and budgets) for a way to control your costs by applying limits to your Bedrock usage.
 
 ## Setup instructions
 
@@ -65,7 +65,7 @@ Once the stack completes you can find a link to the credentials in the `output` 
 
 ### Setup cost alerts and budgets
 
-To provide you an easy entry to cost controling we created a CloudFormation template for you which sets up a soft and hard limit for your account usage. upon reaching the limits you will be notified via your supplied email address and/or phone number.
+To provide you an easy entry to cost controling we created a CloudFormation template for you which sets up a soft and hard limit for your accounts Bedrock usage. upon reaching the limits you will be notified via your supplied email address and/or phone number.
 
 | Region |     | CloudFormation Stack |
 | ---    | --- | --- |
