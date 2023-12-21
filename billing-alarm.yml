@@ -156,7 +156,7 @@ Resources:
     Properties:
       Handler: index.handler
       Role: !GetAtt LambdaExecutionRole.Arn
-      Runtime: python3.8
+      Runtime: python3.12
       Environment:
         Variables:
           USERNAME: !ImportValue ContentfulBedrockUserName

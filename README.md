@@ -88,7 +88,9 @@ Once new models become available you will have to request access to these models
 
 Remember to delete the SecretsManager key after retrieving it.
 
-Apart from that there are no moving parts that need to be maintained.
+### Long term maintenance
+
+The cost control part of the CloudFormation template is solved using a Lambda function to remove the policy from the Contentful Bedrock user. That Lambda function is written in Python, eventually the underlying Python version will need updating, which might or might not require code adaption. At the time of writing the Python runtime version is 3.12, which should be supported [until 2028](https://devguide.python.org/versions/).
 
 ### Deletion
 
