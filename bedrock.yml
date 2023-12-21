@@ -39,8 +39,11 @@ Resources:
               - "bedrock:InvokeModelWithResponseStream"
               - "bedrock:ListFoundationModels"
             Resource: "*"
-
 Outputs:
   SecretManagerURL:
     Description: "URL to the Access and Secret Key in Secrets Manager"
     Value: !Sub "https://console.aws.amazon.com/secretsmanager/home?region=${AWS::Region}#/secret?name=${ContentfulBedrockUserCredentialsStored}"
+  UserName:
+    Value: !Ref ContentfulBedrockUser
+    Export:
+      Name: ContentfulBedrockUserName

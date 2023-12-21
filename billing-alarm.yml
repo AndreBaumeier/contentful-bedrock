@@ -54,6 +54,9 @@ Conditions:
 
 Resources:
 
+  BedrockNotificationTopic:
+    Type: 'AWS::SNS::Topic'
+
   SoftLimitAlarmTopic:
     Type: 'AWS::SNS::Topic'
 
@@ -61,36 +64,20 @@ Resources:
     Type: 'AWS::SNS::Topic'
     Condition: CreateHardLimit
 
-  EmailSubscriptionSoftLimit:
+  EmailSubscription:
     Type: 'AWS::SNS::Subscription'
     Properties:
       Protocol: email
       Endpoint: !Ref EmailAddress
-      TopicArn: !Ref SoftLimitAlarmTopic
+      TopicArn: !Ref BedrockNotificationTopic
 
-  EmailSubscriptionHardLimit:
-    Type: 'AWS::SNS::Subscription'
-    Condition: CreateEmailAndHardLimit
-    Properties:
-      Protocol: email
-      Endpoint: !Ref EmailAddress
-      TopicArn: !Ref HardLimitAlarmTopic
-
-  SMSSubscriptionSoftLimit:
+  SMSSubscription:
     Type: 'AWS::SNS::Subscription'
     Condition: CreateSMSNotification
     Properties:
       Protocol: sms
       Endpoint: !Ref PhoneNumber
-      TopicArn: !Ref SoftLimitAlarmTopic
-
-  SMSSubscriptionHardLimit:
-    Type: 'AWS::SNS::Subscription'
-    Condition: CreateSMSAndHardLimit
-    Properties:
-      Protocol: sms
-      Endpoint: !Ref PhoneNumber
-      TopicArn: !Ref HardLimitAlarmTopic
+      TopicArn: !Ref BedrockNotificationTopic
 
   SoftLimitBudget:
     Type: 'AWS::Budgets::Budget'
@@ -128,6 +115,78 @@ Resources:
           Subscribers:
             - SubscriptionType: SNS
               Address: !Ref HardLimitAlarmTopic
+   
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: LambdaPolicyDetachIamPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - iam:DetachUserPolicy
+                  - iam:ListAttachedUserPolicies
+                Resource: !Join 
+                  - ''
+                  - - 'arn:aws:iam::'
+                    - !Ref 'AWS::AccountId'
+                    - ':user/bedrock/'
+                    - !ImportValue ContentfulBedrockUserName
+              - Effect: Allow
+                Action:
+                  - sns:Publish
+                Resource: !Ref BedrockNotificationTopic
+
+
+  BudgetLimitExceededFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Handler: index.handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Runtime: python3.8
+      Environment:
+        Variables:
+          USERNAME: !ImportValue ContentfulBedrockUserName
+          BEDROCK_NOTIFICATION_TOPIC_ARN: !Ref BedrockNotificationTopic
+
+      Code:
+        ZipFile: |
+          import boto3
+          import json
+          import os
+
+          def handler(event, context):
+              user_name = os.environ['USERNAME']
+              iam_client = boto3.client('iam')
+              sns_client = boto3.client('sns')
+              topic_arn = os.environ['BEDROCK_NOTIFICATION_TOPIC_ARN']
+
+              response = iam_client.list_attached_user_policies(UserName=user_name)
+              detached_policies = []
+              for policy in response['AttachedPolicies']:
+                  iam_client.detach_user_policy(UserName=user_name, PolicyArn=policy['PolicyArn'])
+                  detached_policies.append(policy['PolicyArn'])
+
+              message = {
+                  'User': user_name,
+                  'DetachedPolicies': detached_policies,
+                  'Message': 'Policies detached due to hard limit budget breach'
+              }
+              sns_client.publish(TopicArn=topic_arn, Message=json.dumps(message))
+
+              return {
+                  'statusCode': 200,
+                  'body': json.dumps('Policies detached successfully.')
+              }
 
 Outputs:
   SoftLimitAlarmTopicArn:
