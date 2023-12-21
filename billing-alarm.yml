@@ -88,6 +88,8 @@ Resources:
           Unit: USD
         TimeUnit: MONTHLY
         BudgetType: COST
+        CostFilters:
+          Service: ["Bedrock"]
       NotificationsWithSubscribers:
         - Notification:
             NotificationType: ACTUAL
@@ -107,6 +109,8 @@ Resources:
           Unit: USD
         TimeUnit: MONTHLY
         BudgetType: COST
+        CostFilters:
+          Service: ["Bedrock"]
       NotificationsWithSubscribers:
         - Notification:
             NotificationType: ACTUAL
