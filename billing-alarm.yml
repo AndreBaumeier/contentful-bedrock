@@ -187,6 +187,21 @@ Resources:
                   'statusCode': 200,
                   'body': json.dumps('Policies detached successfully.')
               }
+  LambdaInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !GetAtt BudgetLimitExceededFunction.Arn
+      Action: 'lambda:InvokeFunction'
+      Principal: 'sns.amazonaws.com'
+      SourceArn: !Ref HardLimitAlarmTopic
+  HardLimitSNSSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      TopicArn: !Ref HardLimitAlarmTopic
+      Protocol: lambda
+      Endpoint: !GetAtt BudgetLimitExceededFunction.Arn
+
+
 
 Outputs:
   SoftLimitAlarmTopicArn:
